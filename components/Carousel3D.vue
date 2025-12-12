@@ -27,11 +27,11 @@
               <p class="handle">@{{ card.name.toLowerCase().replace(/\s+/g, '') }}</p>
               <span class="card-body_span">Цитата:</span>
               <p class="quote">"{{ card.quote }}"</p>
-              <div class="socials">
+              <div>
                 <a v-for="s in card.socials" :key="s" href="#" class="social">{{ s }}</a>
               </div>
             </div>
-            <div class="glow" v-if="isIndexActive(i)"></div>
+
           </article>
         </div>
       </div>
@@ -42,9 +42,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { baseCards } from '../data/cards'
-
-const PERSPECTIVE = 99999
-const CENTRAL_SCALE = 1.5
+const CENTRAL_SCALE = 1.2
 
 const viewport = ref<HTMLElement | null>(null)
 const track = ref<HTMLElement | null>(null)
@@ -54,8 +52,8 @@ const originalCount = cards.length
 const renderedCards = computed(() => [...cards, ...cards, ...cards])
 
 const cfg = {
-  baseWidth: 340,
-  gap: 110,
+  baseWidth: 370,
+  gap: 0,
   tabletBreakpoint: 1024,
   mobileBreakpoint: 780,
 }
@@ -86,8 +84,7 @@ function initialCenterPos() {
 
 const trackStyle = computed(() => {
   return {
-    transform: `translate3d(${-state.pos}px, 0, 0)`,
-    perspective: `${PERSPECTIVE}px`,
+    transform: `translate3d(${-state.pos-7}px, 0, 0)`,
   }
 })
 
@@ -111,9 +108,11 @@ function cardStyle(index: number) {
   return {
     width: `${state.itemWidth}px`,
     marginRight: `${cfg.gap}px`,
-    transform: `translateZ(${translateZ}px) rotate(${rotate}deg) scale(${scale})`,
+    transform: `translateZ(${translateZ}px) rotate(${rotate}deg)`,
     opacity: `${opacity}`,
-    zIndex,
+    zIndex: `${zIndex}`,
+    transformStyle: 'preserve-3d' as const,
+    '--scale-factor': `${scale}`,
     transition: state.isDragging || state.animTo ? 'transform 0ms' : 'transform 420ms cubic-bezier(.2,.9,.2,1), filter 420ms, opacity 420ms',
   }
 }
@@ -132,6 +131,11 @@ function recalc() {
   }
 
   state.itemWidth = Math.min(MAX_CARD_WIDTH, rawWidth)
+  
+  // Устанавливаем CSS-переменную для ограничения ширины
+  if (track.value) {
+    track.value.style.setProperty('--card-width', `${state.itemWidth}px`)
+  }
 }
 
 function normalizePos() {
