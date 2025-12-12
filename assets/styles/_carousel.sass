@@ -1,0 +1,152 @@
+.carousel-page
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  background: linear-gradient(180deg, #0b0b0d, #141217)
+
+.carousel-shell
+  width: 100%
+  max-width: 1400px
+  box-sizing: border-box
+  overflow: hidden
+  touch-action: pan-y
+  user-select: none
+  -webkit-user-select: none
+  position: relative
+
+.carousel-track
+  display: flex
+  align-items: center
+  height: 920px
+  transform-style: preserve-3d
+  will-change: transform
+
+.card-wrap
+  flex: 0 0 auto
+  display: block
+  transform-style: preserve-3d
+  backface-visibility: hidden
+  transition: transform 420ms cubic-bezier(.2,.9,.2,1), filter 420ms, opacity 420ms
+  will-change: transform, filter, opacity
+
+.card
+  width: 100%
+  border-radius: 22px
+  overflow: hidden
+  position: relative
+  background: linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 47%, rgba(252, 176, 69, 1) 88%)
+  box-shadow: 0 18px 60px rgba(3,6,12,0.7)
+  transform-origin: center
+  display: flex
+  flex-direction: column
+  height: 100%
+
+.card-media
+  height: 320px
+  background-size: cover
+  background-position: center
+  transition: transform 420ms, filter 420ms
+  will-change: transform, filter
+
+.card-body
+  padding: 18px 20px
+  color: #fff
+  display: flex
+  flex-direction: column
+  gap: 6px
+  flex: 1
+
+.card-body_span
+  font-size: 10px
+  color: #a0a0a0
+
+.name
+  font-size: 22px
+  font-weight: 700
+  margin: 0
+
+.handle
+  font-size: 13px
+  color: rgba(255,255,255,0.85)
+  margin: 0
+
+.quote
+  font-size: 14px
+  color: rgba(255,255,255,0.85)
+  margin-top: 6px
+  flex: 1
+
+.socials
+  display: flex
+  gap: 10px
+
+.social
+  font-size: 12px
+  background: rgba(255,255,255,0.03)
+  padding: 6px 10px
+  border-radius: 8px
+  color: rgba(255,255,255,0.85)
+  text-decoration: none
+
+.card.active
+  box-shadow: 0 34px 120px rgba(7,10,20,0.75)
+
+.card.active .card-media
+  transform: scale(1.05)
+  filter: none
+
+.glow
+  position: absolute
+  inset: 0
+  border-radius: 22px
+  pointer-events: none
+  mix-blend-mode: screen
+  background: radial-gradient(800px 200px at 20% 15%, rgba(255,110,130,0.14), transparent 15%), radial-gradient(700px 180px at 80% 80%, rgba(120,200,255,0.08), transparent 20%)
+  filter: blur(36px)
+  opacity: 0.95
+  animation: glowDrift 5s linear infinite
+
+@keyframes glowDrift
+  0%
+    transform: translateY(-6px) rotate(0deg)
+  50%
+    transform: translateY(6px) rotate(10deg)
+  100%
+    transform: translateY(-6px) rotate(0deg)
+
+.controls
+  margin-top: 18px
+  display: flex
+  gap: 12px
+
+.controls button
+  background: rgba(255,255,255,0.06)
+  color: #fff
+  border: none
+  padding: 8px 12px
+  border-radius: 10px
+  cursor: pointer
+
+/* Tablet */
+@media (max-width: 1024px)
+  .card-media
+    height: 260px
+  .card
+    border-radius: 18px
+
+/* Mobile */
+@media (max-width: 780px)
+  .card-media
+    height: 220px
+  .card
+    border-radius: 16px
+  .carousel-shell
+    padding: 18px 8px
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce)
+  .card-wrap
+    transition: none !important
+    animation: none !important
