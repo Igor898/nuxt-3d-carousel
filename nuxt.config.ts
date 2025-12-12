@@ -1,20 +1,21 @@
 export default defineNuxtConfig({
-  // Базовая конфигурация для GitHub Pages
+  // Netlify не требует baseURL, но можно оставить для превью
   app: {
-    baseURL: '/nuxt-3d-carousel/', // замените на имя вашего репозитория
-    buildAssetsDir: 'assets'
+    baseURL: process.env.NODE_ENV === 'production' ? '/' : '/',
   },
   css: ['./assets/styles/_reset.sass'],
-  // Если используете router
-  router: {
-    options: {
-      hashMode: true // рекомендуется для GitHub Pages
-    }
+  // Включите SSR для лучшей производительности (или оставьте false если нужно)
+  ssr: true,
+  
+  // Netlify автоматически определяет preset, но можно явно указать
+  nitro: {
+    preset: 'netlify' // или 'netlify-static' если нужен static
   },
   
-  // Опционально: другие настройки
-  ssr: false, // для статической генерации можно отключить SSR
-  nitro: {
-    preset: 'static' // для статического хостинга
+  // Дополнительные настройки для GSAP
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag.includes('-')
+    }
   }
 })
